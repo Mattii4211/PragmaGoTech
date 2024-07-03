@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace PragmaGoTech\Interview\Repository;
 
+use PragmaGoTech\Interview\Exception\InvalidLoanPeriodException;
 use PragmaGoTech\Interview\Model\Breakpoint;
-use PragmaGoTech\Interview\Model\Term;
+use PragmaGoTech\Interview\Model\FeeStructure;
 
-class TermRepository
+class TermRepository implements BaseTermInterface
 {
     private const BREAKPOINTS_DATA = [
         12 => [
@@ -56,14 +57,18 @@ class TermRepository
         ]
     ];
 
-    public function getBreakpointsByTerm(int $term): Term
+    public function getBreakpointsByTerm(int $term): FeeStructure
     {
         $breakpoints = [];
+
+        if (!isset(self::BREAKPOINTS_DATA[$term])) {
+            throw new InvalidLoanPeriodException();
+        }
 
         foreach (self::BREAKPOINTS_DATA[$term] as $amount => $fee) {
             $breakpoints[] = new Breakpoint($amount, $fee);
         }
 
-        return new Term($term, $breakpoints);
+        return new FeeStructure($term, $breakpoints);
     }
 }

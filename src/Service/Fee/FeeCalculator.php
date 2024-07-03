@@ -8,7 +8,7 @@ use PragmaGoTech\Interview\Exception\NotStrategyFoundException;
 use PragmaGoTech\Interview\Service\Fee\FeeCalculatorInterface;
 use PragmaGoTech\Interview\Model\LoanProposal;
 use PragmaGoTech\Interview\InterpolationStrategy\Linear;
-use PragmaGoTech\Interview\Repository\TermRepository;
+use PragmaGoTech\Interview\Repository\BaseTermInterface;
 
 final readonly class FeeCalculator implements FeeCalculatorInterface
 {
@@ -17,7 +17,7 @@ final readonly class FeeCalculator implements FeeCalculatorInterface
     ];
 
     public function __construct(
-        private TermRepository $termRepository,
+        private BaseTermInterface $termRepository,
         private string $strategyType = 'linear'
     ) {}
 

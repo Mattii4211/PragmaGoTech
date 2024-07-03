@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace  PragmaGoTech\Interview\Service\Interpolation;
+namespace PragmaGoTech\Interview\Service\Interpolation;
 
 use PragmaGoTech\Interview\Exception\InvalidBreakpointException;
 use PragmaGoTech\Interview\Service\Interpolation\InterpolationInterface;

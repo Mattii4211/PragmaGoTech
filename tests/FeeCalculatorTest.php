@@ -5,10 +5,11 @@ declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 use PragmaGoTech\Interview\Exception\InvalidBreakpointException;
 use PragmaGoTech\Interview\Exception\InvalidLoanAmountException;
+use PragmaGoTech\Interview\Exception\InvalidLoanPeriodException;
 use PragmaGoTech\Interview\Model\LoanProposal;
 use PragmaGoTech\Interview\Repository\TermRepository;
 use PragmaGoTech\Interview\Service\Fee\FeeCalculator;
-use PragmaGoTech\Interview\Model\Term;
+use PragmaGoTech\Interview\Model\FeeStructure;
 
 final class FeeCalculatorTest extends TestCase
 {
@@ -79,9 +80,9 @@ final class FeeCalculatorTest extends TestCase
     {
         $this->assertEquals(
             [
-                115,
-                385,
-                460,
+                115.00,
+                385.00,
+                460.00,
             ],
             [
                 $this->feeCalculator->calculate(new LoanProposal(24, 2750)),
@@ -100,11 +101,17 @@ final class FeeCalculatorTest extends TestCase
         $this->feeCalculator->calculate(new LoanProposal(24, 22750));
     }
 
+    public function testIncorrectTermValue(): void 
+    {
+        $this->expectException(InvalidLoanPeriodException::class);
+        $this->feeCalculator->calculate(new LoanProposal(6, 750));
+    }
+
     public function testIncorrectBreakpoints(): void
     {
         $this->expectException(InvalidBreakpointException::class);
         $termRepository = $this->createMock(TermRepository::class);
-        $termRepository->method('getBreakpointsByTerm')->willReturn(new Term(12, []));
+        $termRepository->method('getBreakpointsByTerm')->willReturn(new FeeStructure(12, []));
         $feeCalculator = new FeeCalculator($termRepository);
         
         $feeCalculator->calculate(new LoanProposal(12, 1000));
