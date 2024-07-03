@@ -28,12 +28,13 @@ final class FeeStructureTest extends TestCase
             true, 
             $this->feeStructure->addBreakpoint(new Breakpoint(1500, 10))
         );
-
+        $newArray = (array)array_merge(
+            $this->termRepository->getBreakpointsByTerm(self::TERM)->breakpoints(), 
+            [new Breakpoint(1500, 10)]
+        );
+        usort($newArray, fn($a, $b) => $a->amount() > $b->amount());
         $this->assertEquals(
-            array_merge(
-                $this->termRepository->getBreakpointsByTerm(self::TERM)->breakpoints(),
-                [new Breakpoint(1500, 10)]
-            ),
+            $newArray,
             $this->feeStructure->breakpoints()
         );
     }

@@ -33,7 +33,7 @@ final class FeeStructure
             $this->breakpoints = $this->feeStructureService->add($breakpoint, $this->breakpoints);
         } catch (BreakpointAlreadyExsistException $e) {
         }
-
+        
         return !isset($e);
     }
 

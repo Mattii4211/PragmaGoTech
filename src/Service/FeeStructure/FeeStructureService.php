@@ -13,7 +13,9 @@ final readonly class FeeStructureService
     public function add(Breakpoint $breakpoint, iterable $breakpoints): iterable
     {
         if (!$this->checkAlreadyExsist($breakpoint, $breakpoints)) {
-            return array_merge($breakpoints, [$breakpoint]);
+            $newArray = (array)array_merge($breakpoints, [$breakpoint]);
+            usort($newArray, fn($a, $b) => $a->amount() > $b->amount());
+            return $newArray;
         }
 
         throw new BreakpointAlreadyExsistException();
@@ -34,7 +36,7 @@ final readonly class FeeStructureService
 
             return $newBreakpoints;
         }
-        
+
         throw new BreakpointNotFoundException();
     }
 
